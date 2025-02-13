@@ -15,12 +15,14 @@ function toggleMusic() {
     }
 }
 
-// Ensure Music Starts When User Interacts with the Page
+// Ensure Music Starts When User Clicks Anywhere on the Page
 document.addEventListener('DOMContentLoaded', function () {
     let music = document.getElementById('bg-music');
-    document.body.addEventListener('click', function () {
-        music.muted = false; // Unmutes music after user interaction
-    });
+    function enableMusic() {
+        music.muted = false; // Allow user interaction to unmute
+        document.body.removeEventListener('click', enableMusic);
+    }
+    document.body.addEventListener('click', enableMusic);
 });
 
 // Function to Handle Reveal Buttons (GIFs & Number)
@@ -36,8 +38,8 @@ function reveal(button) {
     if (button.dataset.correct) {
         // If the correct button is clicked, show the number
         numberElement.style.display = 'block';
-    } else {
-        // Otherwise, show the associated GIF
+    } else if (button.dataset.img) {
+        // If an image is associated with the button, show it
         imageDisplay.src = button.dataset.img;
         imageContainer.style.display = 'block';
     }
